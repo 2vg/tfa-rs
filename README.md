@@ -3,6 +3,12 @@ tfa-rs
 
 tfa-rs is simple Rusty Command-Line Two-Factor Authentication Utility.
 
+## Notes
+
+- 2FA information is strongly encrypted, but if the master key is leaked, nothing can still be done.
+- Since there is a reset command, anyone can freely reset the list.
+- Do not trust this tool entirely. It is just an auxiliary tool. **Be sure to register the service on other 2FA app on your smartphone, etc**.
+
 ## Feature
 
 - Set any master key and encrypt the service name and secret key.
