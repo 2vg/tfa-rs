@@ -15,7 +15,7 @@ tfa-rs is simple Rusty Command-Line Two-Factor Authentication Utility.
 
       - `-c, --config "config_path"` :</br>Use a custom config file
 
-      - `--hotp "counter_value"` :</br>Generate HOTP with argumentsascounters
+      - `--hotp "counter_value"` :</br>Generate HOTP with arguments as counters
 
       - `-l, --length "code_length"` :</br>Set the length of OTP code
 
@@ -26,7 +26,7 @@ tfa-rs is simple Rusty Command-Line Two-Factor Authentication Utility.
     - `list` :</br>Show the all service name from list
       - `-s, --show` :</br>Show the OTP code of service name
 
-    - `master "your_master_key"` :</br>set the master key. if existsany key-value and not set master key yet, tfa-rs will encrypt allkey-value
+    - `master "your_master_key"` :</br>set the master key. if exists any key-value and not set master key yet, tfa-rs will encrypt all key-value
 
     - `reset` :</br>delete all key-value from the list
 
