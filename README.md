@@ -43,7 +43,8 @@ In `tfa-rs`, the Master key is hashed using `argon2` and the service key-value i
 ## Usage
 
 See the command list in the [Feature](#Feature) section.</br>
-By default, the config file is created under your home directory with the filename `.tfa`.</br>
+By default, the config file is created under `XDG_CONFIG_HOME`(if none, `$HOME/.config`, even not Linux) with the filename `.tfa`.</br>
+See more information: [XDG Base Directory Specification](https://specifications.freedesktop.org/basedir-spec/latest/)</br>
 
 ```
 # optional

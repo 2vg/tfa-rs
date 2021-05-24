@@ -64,16 +64,20 @@ fn main() -> Result<()> {
     )
     .get_matches();
 
-    let home = if let Some(pathbuf) = home_dir() {
-        pathbuf.as_path().to_str().unwrap().to_string()
+    let xdg_config_dir = if let Ok(dir) = std::env::var("XDG_CONFIG_DIR") {
+        PathBuf::from(dir)
     } else {
-        r".\".to_string()
+        if let Some(pathbuf) = home_dir() {
+            pathbuf.join(".config")
+        } else {
+            bail!("Could not found $XDG_CONFIG_DIR or $HOME. Please set the path to either env var.")
+        }
     };
 
     let config_path = if let Some(config_path) = &matches.value_of("CONFIG") {
         Path::new(config_path).to_path_buf()
     } else {
-        Path::new(&home).join(".tfa")
+        xdg_config_dir.join(".tfa")
     };
 
     if !config_path.exists() {
