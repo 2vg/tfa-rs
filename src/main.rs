@@ -64,7 +64,7 @@ fn main() -> Result<()> {
     )
     .get_matches();
 
-    let xdg_config_dir = if let Ok(dir) = std::env::var("XDG_CONFIG_DIR") {
+    let xdg_config_dir = if let Ok(dir) = std::env::var("XDG_CONFIG_HOME") {
         PathBuf::from(dir)
     } else {
         if let Some(pathbuf) = home_dir() {
