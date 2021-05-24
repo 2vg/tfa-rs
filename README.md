@@ -6,12 +6,12 @@ tfa-rs is simple Rusty Command-Line Two-Factor Authentication Utility.
 ## Feature
 
 - Set any master key and encrypt the service name and secret key.
-- To get the OTPP code, just enter the service name. There are only four subcommands.
+- To get the OTPP code, just enter the service name. There are only 5 subcommands, and There are few command options.
   <details>
     <summary>command list (click to expand/collapse)</summary>
 
     - `"service_name"` :</br>try to get OTP code
-      - `-- clip` :</br>copy OTP code to clipboard
+      - `--clip` :</br>copy OTP code to clipboard
 
       - `-c, --config "config_path"` :</br>Use a custom config file
 
@@ -22,6 +22,9 @@ tfa-rs is simple Rusty Command-Line Two-Factor Authentication Utility.
     - `add "service_name" "service_secret_key"` :</br>add new servicekey-value to the list
 
     - `rm "service_name"` :</br>remove service key-value from the list
+
+    - `list` :</br>Show the all service name from list
+      - `-s, --show` :</br>Show the OTP code of service name
 
     - `master "your_master_key"` :</br>set the master key. if existsany key-value and not set master key yet, tfa-rs will encrypt allkey-value
 

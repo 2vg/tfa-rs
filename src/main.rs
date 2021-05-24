@@ -42,13 +42,17 @@ fn main() -> Result<()> {
         (@arg LENGTH: -l --length +takes_value "Set the length of OTP code")
         (@arg INPUT:)
         (@subcommand add =>
-            (about: "add new service key to list")
+            (about: "Add new service key to list")
             (@arg NAME: +required "<Your service name>")
             (@arg KEY: +required "<Service secret key>")
         )
         (@subcommand rm =>
-            (about: "delete service key from list")
+            (about: "Delete service key from list")
             (@arg NAME: +required "<Your service name>")
+        )
+        (@subcommand list =>
+            (about: "Show the all service name from list")
+            (@arg SHOW_OTP_CODE: -s --show "Show the OTP code of service name")
         )
         (@subcommand master =>
             (about: "Configuration the master key for tfa-rs")
@@ -119,6 +123,10 @@ fn main() -> Result<()> {
 
     if let Some(ref matches) = matches.subcommand_matches("rm") {
         rm(&mut config, &matches.value_of("NAME").unwrap())?;
+    }
+
+    if let Some(ref matches) = matches.subcommand_matches("list") {
+        list(&mut config, matches.is_present("SHOW_OTP_CODE"))?;
     }
 
     if let Some(ref matches) = matches.subcommand_matches("master") {
@@ -262,6 +270,45 @@ pub fn rm(config: &mut Config, name: &str) -> Result<()> {
     Ok(())
 }
 
+pub fn list(config: &Config, show_otp_code: bool) -> Result<()> {
+    let master_hash = config.master.to_string();
+    let master_key = if &master_hash != "" {
+        let password = prompt_password_stdout("Enter the master key: ")?;
+        if verify_master_hash(&master_hash, &password).is_ok() {
+            password.to_string()
+        } else {
+            bail!("Master key is wrong.\nif forget master key, need to reset list.")
+        }
+    } else {
+        "".to_string()
+    };
+
+    if &master_key == "" {
+        for (k, v) in config.key_map.iter() {
+            if show_otp_code {
+                let service_secret_key = String::from_utf8_lossy(v);
+                println!("{}: {}", u8_to_string(k), tfa_totp(&service_secret_key, 6)?);
+            } else {
+                println!("{}", u8_to_string(k));
+            }
+        }
+    } else {
+        for (k, v) in config.key_map.iter() {
+            if show_otp_code {
+                let decrypted_name = decrypt(&master_key, k)?;
+                let decrypted_key = decrypt(&master_key, v)?;
+                let service_secret_key = String::from_utf8_lossy(&decrypted_key);
+                println!("{}: {}", u8_to_string(&decrypted_name), tfa_totp(&service_secret_key, 6)?);
+            } else {
+                let decrypted_name = decrypt(&master_key, k)?;
+                println!("{}", u8_to_string(&decrypted_name));
+            }
+        }
+    }
+
+    Ok(())
+}
+
 pub fn master(config: &mut Config, key: &str) -> Result<()> {
     if config.master != "" {
         bail!("Master key is already exists")
@@ -389,4 +436,8 @@ pub fn tfa_hotp(counter: u64, key: &str, len: usize) -> Result<String> {
     } else {
         bail!("Could not get OTP code")
     }
+}
+
+pub fn u8_to_string(bin: &[u8]) -> String {
+    String::from_utf8_lossy(bin).to_string()
 }
