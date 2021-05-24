@@ -7,30 +7,27 @@ tfa-rs is simple Rusty Command-Line Two-Factor Authentication Utility.
 
 - Set any master key and encrypt the service name and secret key.
 - To get the OTPP code, just enter the service name. There are only four subcommands.
-    <details>
-        <summary>command list (click to expand/collapse)</summary>
+  <details>
+    <summary>command list (click to expand/collapse)</summary>
 
-        - `"service_name"` :</br>try to get OTP code
+    - `"service_name"` :</br>try to get OTP code
+      - `-- clip` :</br>copy OTP code to clipboard
 
-        - option list↓
+      - `-c, --config "config_path"` :</br>Use a custom config file
 
-        - `-- clip` :</br>copy OTP code to clipboard
+      - `--hotp "counter_value"` :</br>Generate HOTP with argumentsascounters
 
-        - `-c, --config "config_path"` :</br>Use a custom config file
+      - `-l, --length "code_length"` :</br>Set the length of OTP code
 
-        - `--hotp "counter_value"` :</br>Generate HOTP with arguments ascounters
+    - `add "service_name" "service_secret_key"` :</br>add new servicekey-value to the list
 
-        - `-l, --length "code_length"` :</br>Set the length of OTP code
+    - `rm "service_name"` :</br>remove service key-value from the list
 
-        - `add "service_name" "service_secret_key"` :</br>add new service key-value to the list
+    - `master "your_master_key"` :</br>set the master key. if existsany key-value and not set master key yet, tfa-rs will encrypt allkey-value
 
-        - `rm "service_name"` :</br>remove service key-value from the list
+    - `reset` :</br>delete all key-value from the list
 
-        - `master "your_master_key"` :</br>set the master key. if exists any key-value and not set master key yet, tfa-rs will encrypt all key-value
-
-        - `reset` :</br>delete all key-value from the list
-
-    </details>
+  </details>
 
 ## Encryption
 
