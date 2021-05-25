@@ -14,7 +14,7 @@ use libreauth::oath::{HOTPBuilder, TOTPBuilder};
 use rand_core::OsRng;
 use ron::{
     de::from_reader,
-    ser::{to_string_pretty, PrettyConfig},
+    ser::to_string,
 };
 use rpassword::prompt_password_stdout;
 use serde::{Deserialize, Serialize};
@@ -149,13 +149,12 @@ fn main() -> Result<()> {
 }
 
 pub fn save_config(config: &Config, path: &Path) -> Result<()> {
-    let pretty = PrettyConfig::new();
     let mut f = std::fs::OpenOptions::new()
         .write(true)
         .truncate(true)
         .create(true)
         .open(path)?;
-    f.write_all(to_string_pretty(config, pretty)?.as_bytes())?;
+    f.write_all(to_string(config)?.as_bytes())?;
     f.flush()?;
     Ok(())
 }
